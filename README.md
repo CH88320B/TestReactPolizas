@@ -132,3 +132,21 @@ Asegúrate de tener configurado CORS si accedés desde diferentes dominios.
 Swagger está disponible en: https://localhost:44320/swagger  --puerto puede variar
 
 
+
+Despliegue en Azure App Service (Opcional)
+Backend:
+Crear recurso Azure App Service (.NET 8).
+
+Publicar con Visual Studio / GitHub Actions.
+
+Configurar la cadena de conexión y variables de entorno (JWT).
+
+Frontend:
+Compilar proyecto:
+
+bash
+Copy
+Edit
+npm run build
+Subir carpeta dist/ a Azure Storage Static Website o Vercel/Netlify.
+
