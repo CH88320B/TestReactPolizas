@@ -16,20 +16,19 @@ namespace WebApiPolizas.Controllers
             dbContext = _dbContext;
         }
 
-        [HttpGet]
-       [Route("Lista")]
-        public async Task<IActionResult> Get()
-        {
-            var listapoliza = await dbContext.Polizas
-               // .Include(p => p.Cliente)
-                //.Include(p => p.TipoPoliza)
-                //.Include(p => p.Cobertura)
-                 //.Include(p => p.EstadoPoliza)
-                //.Include(p => p.Aseguradora)
-                .ToListAsync();
-
-            return StatusCode(StatusCodes.Status200OK, listapoliza);
-        }
+       [HttpGet("Lista")]
+       public async Task<IActionResult> Get()
+    {
+    try
+    {
+        var total = await dbContext.Polizas.CountAsync();
+        return Ok(new { TotalPolizas = total });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, ex.Message);
+    }
+}
 
         [HttpGet("Buscar")]
         public async Task<IActionResult> Buscar(
