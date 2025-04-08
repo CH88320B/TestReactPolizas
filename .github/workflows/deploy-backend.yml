@@ -25,11 +25,3 @@ jobs:
       run: dotnet build ./WebPolizas/Webpolizas/Webpolizas.csproj --configuration Release
 
     - name: Publish
-      run: dotnet publish ./WebPolizas/Webpolizas/Webpolizas.csproj -c Release -o publish_output
-
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: webapi-pruebas-hj   # Reemplaza con el nombre exacto de tu App Service en Azure
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: publish_output
