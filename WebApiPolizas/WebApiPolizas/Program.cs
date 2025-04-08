@@ -12,8 +12,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<PolizasDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectSQL"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ConnectSQL"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        )
+    );
 });
+
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
