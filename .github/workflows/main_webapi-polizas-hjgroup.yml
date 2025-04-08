@@ -21,13 +21,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore
-        run: dotnet restore WebApiPolizas/WebApiPolizas.csproj
+        run: dotnet restore WebApiPolizas/WebApiPolizas/WebApiPolizas.csproj
 
       - name: Build
-        run: dotnet build WebApiPolizas/WebApiPolizas.csproj --configuration Release
+        run: dotnet build WebApiPolizas/WebApiPolizas/WebApiPolizas.csproj --configuration Release
 
       - name: Publish
-        run: dotnet publish WebApiPolizas/WebApiPolizas.csproj --configuration Release --output ./publish
+        run: dotnet publish WebApiPolizas/WebApiPolizas/WebApiPolizas.csproj --configuration Release --output ./publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
