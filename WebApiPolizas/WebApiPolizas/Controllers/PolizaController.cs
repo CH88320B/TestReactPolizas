@@ -16,19 +16,32 @@ namespace WebApiPolizas.Controllers
             dbContext = _dbContext;
         }
 
-       [HttpGet("Lista")]
-       public async Task<IActionResult> Get()
+    [HttpGet("Lista")]
+    public async Task<IActionResult> Get()
     {
-    try
+     try
     {
-        var total = await dbContext.Polizas.CountAsync();
-        return Ok(new { TotalPolizas = total });
+        var polizas = await dbContext.Polizas
+            .Include(p => p.Cliente)
+            .Include(p => p.TipoPoliza)
+            .Include(p => p.Cobertura)
+            .Include(p => p.EstadoPoliza)
+            .Include(p => p.Aseguradora)
+            .ToListAsync();
+
+        return Ok(polizas);
     }
     catch (Exception ex)
     {
-        return StatusCode(500, ex.Message);
+        // ⚠️ Muestra la excepción completa en la respuesta para debugging temporal
+        return StatusCode(500, new
+        {
+            message = ex.Message,
+            inner = ex.InnerException?.Message
+        });
     }
-}
+   }
+
 
         [HttpGet("Buscar")]
         public async Task<IActionResult> Buscar(
