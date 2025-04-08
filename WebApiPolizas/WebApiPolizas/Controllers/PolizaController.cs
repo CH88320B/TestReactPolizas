@@ -21,11 +21,11 @@ namespace WebApiPolizas.Controllers
         public async Task<IActionResult> Get()
         {
             var listapoliza = await dbContext.Polizas
-                .Include(p => p.Cliente)
-                .Include(p => p.TipoPoliza)
-                .Include(p => p.Cobertura)
-                 .Include(p => p.EstadoPoliza)
-                .Include(p => p.Aseguradora)
+               // .Include(p => p.Cliente)
+                //.Include(p => p.TipoPoliza)
+                //.Include(p => p.Cobertura)
+                 //.Include(p => p.EstadoPoliza)
+                //.Include(p => p.Aseguradora)
                 .ToListAsync();
 
             return StatusCode(StatusCodes.Status200OK, listapoliza);
