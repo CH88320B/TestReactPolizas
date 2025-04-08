@@ -6,9 +6,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -17,17 +15,11 @@ builder.Services.AddDbContext<PolizasDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectSQL"));
 });
 
-
-//builder.Services.AddControllers()
-// .AddJsonOptions(x =>
-//   x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
-
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
-
 
 builder.Services.AddCors(options =>
 {
@@ -36,7 +28,6 @@ builder.Services.AddCors(options =>
         app.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
-
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -55,20 +46,14 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// ✅ Mostrar Swagger en todos los entornos (incluido Azure)
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("NuevaPolitica");
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
