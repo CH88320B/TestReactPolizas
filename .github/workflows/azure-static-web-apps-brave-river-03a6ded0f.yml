@@ -43,7 +43,7 @@ jobs:
           action: "upload"
           app_location: "appPolizas"     # 👈 Ruta de tu app React
           api_location: ""               # Vacío si no usás funciones
-          output_location: "build"       # Carpeta generada por npm run build
+          output_location: "dist"       # Carpeta generada por npm run build
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
