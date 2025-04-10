@@ -15,10 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     permissions:
-       id-token: write
-       contents: read
+      id-token: write
+      contents: read
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
@@ -26,7 +28,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Usá la versión que estés utilizando localmente
+          node-version: '18' # Asegurate que coincida con tu versión local
 
       - name: Install dependencies
         run: npm install
@@ -36,8 +38,11 @@ jobs:
         run: npm run build
         working-directory: appPolizas
 
-      - name: Copy staticwebapp.config.json to dist
-        run: cp staticwebapp.config.json dist/
+      - name: Copy staticwebapp.config.json to dist (if exists)
+        run: |
+          if [ -f staticwebapp.config.json ]; then
+            cp staticwebapp.config.json dist/
+          fi
         working-directory: appPolizas
 
       - name: Deploy to Azure Static Web Apps
