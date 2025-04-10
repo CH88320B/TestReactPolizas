@@ -28,7 +28,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Asegurate que coincida con tu versión local
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -38,11 +38,12 @@ jobs:
         run: npm run build
         working-directory: appPolizas
 
-      - name: Copy staticwebapp.config.json to dist (if exists)
-        run: |
-          if [ -f staticwebapp.config.json ]; then
-            cp staticwebapp.config.json dist/
-          fi
+      - name: Mostrar contenido de dist
+        run: ls -la dist
+        working-directory: appPolizas
+
+      - name: Copiar staticwebapp.config.json a dist
+        run: cp staticwebapp.config.json dist/
         working-directory: appPolizas
 
       - name: Deploy to Azure Static Web Apps
