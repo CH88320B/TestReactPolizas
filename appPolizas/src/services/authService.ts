@@ -8,7 +8,7 @@ type AuthResponse = {
 
 export const authService = {
   login: async (login: string, contrasena: string): Promise<AuthResponse> => {
-    const response = await fetch('https://localhost:44320/api/Auth/Acceso', {
+    const response = await fetch('https://webapi-polizas-hjgroup-g4a0dwb2bpcndgcz.canadacentral-01.azurewebsites.net/api/Auth/Acceso', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, contrasena }),
