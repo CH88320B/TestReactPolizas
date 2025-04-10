@@ -1,152 +1,149 @@
-# TestReactPolizas
-Proyecto Prueba React + Webappi Netcore +SQLServer
+Proyecto: CRUD de Pólizas - WebAPI + React (con Deploy en Azure)
 
+Este proyecto consiste en una aplicación completa para el mantenimiento de pólizas de seguros. Incluye un backend desarrollado en ASP.NET Core Web API y un frontend moderno hecho en React con Vite, con despliegue continuo (CI/CD) automatizado en Azure Static Web Apps.
 
+🚀 Tecnologías Usadas
 
-Guía de Instalación - Sistema de Gestión de Pólizas
+Backend
 
-Este proyecto incluye una Web API desarrollada con ASP.NET Core y un frontend en React + Vite. A continuación se detallan todos los pasos para la instalación del entorno y ejecución de ambas aplicaciones.
+ASP.NET Core 8.0
 
-📁 Requisitos Previos
+Entity Framework Core 9.0
+
+SQL Server LocalDB
+
+Autenticación JWT
+
+Swagger
+
+Frontend
+
+React 18
+
+Vite
+
+TypeScript
+
+Bootstrap 5
+
+CI/CD y Hosting
+
+GitHub Actions
+
+Azure Static Web Apps (para el frontend)
+
+Azure App Service (para el backend Web API)
+
+📊 Estructura del Proyecto
+
+CRUD_MANT_POLIZAS/
+├── WebApiPolizas/                 # Proyecto ASP.NET Core Web API
+│   └── WebApiPolizas.csproj
+├── appPolizas/                   # Proyecto React con Vite
+│   ├── dist/                     # Archivos de build (frontend)
+│   ├── src/                      # Componentes React
+│   ├── staticwebapp.config.json # Configuración para Azure Static Web Apps
+│   └── vite.config.ts
+├── .github/
+│   └── workflows/
+│       ├── azure-static-web-apps-<id>.yml   # Despliegue del frontend
+│       └── main_webapi-pruebas-hj.yml      # Despliegue del backend
+
+🚜 Instalación Local
+
+1. Clonar el Repositorio
+
+git clone https://github.com/CH88320B/TestReactPolizas.git
+cd TestReactPolizas
+
+2. Configurar el Backend
+
+Requisitos:
 
 .NET 8 SDK
 
-Node.js (v16+)
+SQL Server LocalDB
 
-Visual Studio 2022 con soporte para ASP.NET y Entity Framework Core
+Ejecutar Web API localmente:
 
-SQL Server (Express o superior)
+cd WebApiPolizas/WebApiPolizas
 
-🚀 Instalación del Backend (Web API Aspt NetCore )
+dotnet restore
+dotnet build
+dotnet run
 
-1. Restaurar paquetes NuGet
+Acceder a: http://localhost:5122/swagger/index.html
 
-Desde la carpeta del proyecto Web API, ejecutar:
+3. Configurar el Frontend
 
- dotnet restore
-
-2. Instalar paquetes NuGet necesarios
-
- dotnet add package Microsoft.EntityFrameworkCore
- dotnet add package Microsoft.EntityFrameworkCore.SqlServer
- dotnet add package Microsoft.EntityFrameworkCore.Tools
- dotnet add package Swashbuckle.AspNetCore
- dotnet add package Swashbuckle.AspNetCore.Filters
- dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
-
-3. Configurar appsettings.json
-
-Actualizar la cadena de conexión con tu base de datos SQL Server y asegurarte de que el Jwt:Key y Issuer estén configurados:
-
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=PolizasDB;Trusted_Connection=True;"
-},
-"Jwt": {
-  "Key": "CLAVE_SECRETA_AQUI",
-  "Issuer": "https://localhost:44320"
-}
-
-4. Ejecutar el proyecto
-
- dotnet run
-
-El proyecto se servirá en https://localhost:44320
-
-📚 Instalación del Frontend (React + Vite)
-
-1. Entrar al directorio del frontend
-
-cd frontend
-
-2. Instalar dependencias
-
-install Vite 
-en la ruta del proyecto desde CMD  >  npm create vite@lastest luego colocar Name Project  y tipo proyecto React + SWC
+cd appPolizas
 npm install
-en la consola abrir el VScode , comando "code . "
-
-desde la consola Manager de Nuget npm run dev
-
-
-3. Instalar paquetes necesarios desde la consola Manager de Nuget
-
-npm install react-router-dom
-npm install bootstrap reactstrap
-npm install sweetalert2
-
-# Tipos para TypeScript
-npm install --save-dev @types/react-router-dom
-npm install --save-dev @types/sweetalert2
-
-4. Importar Bootstrap
-
-Agregar en main.tsx o index.tsx:
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-5. Configurar appsettings.ts
-
-Archivo src/settings/appsettings.ts:
-
-export const appsettings = {
-  apiUrl: "https://localhost:44320/api/" -Piuerto puede variar
-
-};
-
-6. Ejecutar la aplicación React
-
 npm run dev
 
-La app estará disponible en http://localhost:5173--Piuerto puede variar
+Acceder a: http://localhost:5173
 
-🌐 Rutas importantes
+⚙️ Configuración del YAML (CI/CD)
 
-Ruta
+Archivo: .github/workflows/azure-static-web-apps-<id>.yml
 
-Descripción
+name: Azure Static Web Apps CI/CD
 
-/login
+on:
+  push:
+    branches:
+      - main
 
-Inicio de sesión
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-/polizas
+      - name: Instalar dependencias
+        run: npm install
+        working-directory: appPolizas
 
-Listado de pólizas
+      - name: Build de la app
+        run: npm run build
+        working-directory: appPolizas
 
-/nuevaPoliza
+      - name: Copiar staticwebapp.config.json
+        run: cp staticwebapp.config.json dist/
+        working-directory: appPolizas
 
-Crear nueva póliza
+      - name: Desplegar en Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_RIVER_03A6DED0F }}
+          action: "upload"
+          app_location: "appPolizas"
+          output_location: "dist"
 
-/editarPoliza/:id
+Nota: El secreto AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_RIVER_03A6DED0F se genera desde el portal de Azure.
 
-Editar una póliza existente
+🌐 Despliegue a Producción
 
-Eliminar Poliza
+📱 Frontend - Azure Static Web Apps
 
-📄 Notas
+Subida automática con cada push a main.
 
-El backend usa autenticación JWT.
+Azure usará dist/ como carpeta final.
 
-Asegúrate de tener configurado CORS si accedés desde diferentes dominios.
+Configurado con staticwebapp.config.json para manejar rutas y tipos MIME.
 
-Swagger está disponible en: https://localhost:44320/swagger  --puerto puede variar
+🚀 Backend - Azure App Service
 
+Desplegado con su propio YAML.
 
+Usa dotnet publish y az webapp deploy para montar el servicio.
 
-Despliegue en Azure App Service (Opcional)
-Backend:
-Crear recurso Azure App Service (.NET 8).
+🎮 Resultado Final
 
-Publicar con Visual Studio / GitHub Actions.
+WebAPI Swagger: https://webapi-polizas-hjgroup.azurewebsites.net/swagger/index.html
 
-Configurar la cadena de conexión y variables de entorno (JWT).
+Frontend React: https://brave-river-03a6ded0f.6.azurestaticapps.net/
 
-Frontend:
-Compilar proyecto:
+🔗 Contacto
 
-bash
-Copy
-Edit
-npm run build
-Subir carpeta dist/ a Azure Storage Static Website o Vercel/Netlify.
+Autor: Henderson J.Email: hendersonc.tpfactory@gmail.com
 
